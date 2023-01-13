@@ -1,0 +1,66 @@
+name: "Subalfred check runtime action"
+description: "Use `subalfred check runtime` to check your runtime code."
+branding:
+  color: "gray-dark"
+  icon: "check-circle"
+inputs:
+  uploaded-artifact:
+    description: "The name of the uploaded artifact, and it should be the same as the binary file. The artifact's content should be the node's executable binary file."
+    required: true
+  chain:
+    description: "The name of the chain artifact, which will be passed to the `--chain` option."
+    required: true
+  compare-with:
+    description: "The RPC HTTP endpoint of the chain that you want to compare the runtime with."
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Subalfred
+      run: |
+        curl -L https://github.com/hack-ink/subalfred/releases/latest/download/subalfred-x86_64-unknown-linux-gnu.zst | zstd -o subalfred -d
+        chmod u+x subalfred
+        sudo mv subalfred /usr/bin/subalfred-check-runtime-action
+      shell: bash
+    - name: Download ${{ inputs.uploaded-artifact }}
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ inputs.uploaded-artifact }}
+    - name: Install ${{ inputs.uploaded-artifact }}
+      run: |
+        chmod u+x ${{ inputs.uploaded-artifact }}
+        sudo mv ${{ inputs.uploaded-artifact }} /usr/bin/node-check-runtime-action
+      shell: bash
+    - name: Check ${{ inputs.chain }} runtime version
+      id: check-runtime-version
+      run: |
+        echo "check-runtime-version<<EOF" >> $GITHUB_OUTPUT
+        echo "$(subalfred-check-runtime-action check runtime --executable node-check-runtime-action --chain ${{ inputs.chain }} --live ${{ inputs.compare-with }} --property version)" >> $GITHUB_OUTPUT
+        echo 'EOF' >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Check ${{ inputs.chain }} runtime storage
+      id: check-runtime-storage
+      run: |
+        echo "check-runtime-storage<<EOF" >> $GITHUB_OUTPUT
+        echo "$(subalfred-check-runtime-action check runtime --executable node-check-runtime-action --chain ${{ inputs.chain }} --live ${{ inputs.compare-with }} --property storage)" >> $GITHUB_OUTPUT
+        echo 'EOF' >> $GITHUB_OUTPUT
+      shell: bash
+    - if: github.ref != 'refs/heads/master'
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        append: true
+        message: |
+          <details>
+          <summary>Commit ${{ github.event.pull_request.head.sha }}</summary>
+
+          **${{ inputs.chain }}**
+          > Check runtime version
+          ```diff
+          ${{ steps.check-runtime-version.outputs.check-runtime-version }}
+          ```
+          > Check runtime storage
+          ```diff
+          ${{ steps.check-runtime-storage.outputs.check-runtime-storage }}
+          ```
+          </details>
