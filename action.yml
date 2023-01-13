@@ -46,11 +46,12 @@ runs:
         echo "$(subalfred-check-runtime-action check runtime --executable node-check-runtime-action --chain ${{ inputs.chain }} --live ${{ inputs.compare-with }} --property storage)" >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
       shell: bash
-    - if: github.ref != 'refs/heads/master'
+    - name: Update checking results
+      if: github.ref != 'refs/heads/master'
       uses: marocchino/sticky-pull-request-comment@v2
       with:
         header: Runtime checks of ${{ inputs.chain }}
-        hide: true
+        hide_and_recreate: true
         message: |
           <details>
           <summary>Check commit(${{ github.event.pull_request.head.sha }}) chain(${{ inputs.chain }})</summary>
