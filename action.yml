@@ -54,7 +54,7 @@ runs:
         hide_and_recreate: true
         message: |
           <details>
-          <summary>Check commit(${{ github.event.pull_request.head.sha }}) chain(${{ inputs.chain }})</summary>
+          <summary>Check ${{ github.event.pull_request.head.sha }} <code>${{ inputs.chain }}</code></summary>
 
           > Check runtime version
           ```diff
