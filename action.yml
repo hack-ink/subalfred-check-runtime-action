@@ -49,12 +49,11 @@ runs:
     - if: github.ref != 'refs/heads/master'
       uses: marocchino/sticky-pull-request-comment@v2
       with:
-        append: true
         message: |
           <details>
           <summary>Commit ${{ github.event.pull_request.head.sha }}</summary>
 
-          **${{ inputs.chain }}**
+          ### ${{ inputs.chain }}
           > Check runtime version
           ```diff
           ${{ steps.check-runtime-version.outputs.check-runtime-version }}
