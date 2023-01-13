@@ -53,7 +53,7 @@ runs:
         hide: true
         message: |
           <details>
-          <summary>Commit ${{ github.event.pull_request.head.sha }} </summary>
+          <summary>Check commit(${{ github.event.pull_request.head.sha }}) chain(${{ inputs.chain }})</summary>
 
           > Check runtime version
           ```diff
