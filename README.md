@@ -7,6 +7,15 @@
 
 </div>
 
+### Introduction
+**This will show the differences between you local runtime and the remote runtime.**
+
+**Including:**
+- **storage**
+- **runtime version**
+
+**Take a look at the real example [here](https://github.com/hack-ink/subalfred-github-action-examples/pull/2).**
+
 ### Usage
 > **Take [Polkadot code/repository](https://github.com/paritytech/polkadot) as an example.**
 
