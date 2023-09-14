@@ -60,6 +60,7 @@ on:
 jobs:
   runtime-checks:
     name: Task check runtime
+    needs: [basic-checks]
     runs-on: ubuntu-latest
     steps:
       - name: Check
