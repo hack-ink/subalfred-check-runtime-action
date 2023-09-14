@@ -24,7 +24,7 @@ runs:
         sudo mv subalfred /usr/bin/subalfred-check-runtime-action
       shell: bash
     - name: Download ${{ inputs.uploaded-artifact }}
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.uploaded-artifact }}
     - name: Install ${{ inputs.uploaded-artifact }}
