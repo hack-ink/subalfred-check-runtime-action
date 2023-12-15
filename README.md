@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check
-        uses: actions/subalfred-check-runtime-action@v0.2.0
+        uses: actions/subalfred-check-runtime-action@v0.2.1
         with:
           uploaded-artifact: polkadot
           chain: polkadot
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check ${{ matrix.target.chain }}
-        uses: hack-ink/subalfred-check-runtime-action@v0.2.0
+        uses: hack-ink/subalfred-check-runtime-action@v0.2.1
         with:
           uploaded-artifact: polkadot
           chain: ${{ matrix.target.chain }}
